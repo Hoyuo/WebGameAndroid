@@ -33,7 +33,6 @@
                     android:id="@+id/upBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:onClick="PadSender"
                     android:text="▲" />
             </LinearLayout>
 
@@ -59,7 +58,6 @@
                     android:id="@+id/leftBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:onClick="PadSender"
                     android:text="◀" />
             </LinearLayout>
 
@@ -78,7 +76,6 @@
                     android:id="@+id/rightBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:onClick="PadSender"
                     android:text="▶" />
             </LinearLayout>
         </LinearLayout>
@@ -104,7 +101,6 @@
                     android:id="@+id/downBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:onClick="PadSender"
                     android:text="▼" />
             </LinearLayout>
 
