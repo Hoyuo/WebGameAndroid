@@ -10,11 +10,15 @@ import java.net.MalformedURLException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.string;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
 
-public class APadActivity extends Activity {
+public class APadActivity extends Activity implements OnTouchListener {
 
 	SocketIO socket = null;
 
@@ -23,6 +27,14 @@ public class APadActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
 		setContentView(R.layout.activity_apad);
+		Button up = (Button) findViewById(R.id.upBtn);
+		Button down = (Button) findViewById(R.id.downBtn);
+		Button left = (Button) findViewById(R.id.leftBtn);
+		Button right = (Button) findViewById(R.id.rightBtn);
+		up.setOnTouchListener(this);
+		down.setOnTouchListener(this);
+		left.setOnTouchListener(this);
+		right.setOnTouchListener(this);
 	}
 
 	private void SocketConnection(String server) {
@@ -74,36 +86,51 @@ public class APadActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		if (socket != null)
+		if (socket != null) {
 			socket.disconnect();
-
+			socket = null;
+		}
 		super.onDestroy();
 	}
 
-	public void PadSender(View v) {
-		if (socket == null)
-			SocketConnection("http://210.118.74.89:13000");
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		int f = -1;
 
-		switch (v.getId()) {
-		case R.id.upBtn:
-			socket.emit("btn", "up");
-			break;
-
-		case R.id.downBtn:
-			socket.emit("btn", "down");
-			break;
-
-		case R.id.leftBtn:
-			socket.emit("btn", "left");
-			break;
-
-		case R.id.rightBtn:
-			socket.emit("btn", "right");
-			break;
-
-		default:
-			break;
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			f = 0;
+		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			f = 1;
 		}
+
+		if (f != -1) {
+			if (socket == null)
+				SocketConnection("http://210.118.74.89:13000");
+
+			String send = "";
+			switch (v.getId()) {
+			case R.id.upBtn:
+				send = "upBtn";
+				break;
+
+			case R.id.downBtn:
+				send = "downBtn";
+				break;
+
+			case R.id.leftBtn:
+				send = "leftBtn";
+				break;
+
+			case R.id.rightBtn:
+				send = "rightBtn";
+				break;
+
+			default:
+				break;
+			}
+			socket.emit("pad", send, f);
+		}
+		return false;
 	}
 
 	public void BtnSender(View v) {
