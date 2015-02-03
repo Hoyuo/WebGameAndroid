@@ -80,9 +80,35 @@ public class APadActivity extends Activity {
 		super.onDestroy();
 	}
 
+	public void PadSender(View v) {
+		if (socket == null)
+			SocketConnection("http://210.118.74.89:13000");
+
+		switch (v.getId()) {
+		case R.id.upBtn:
+			socket.emit("btn", "up");
+			break;
+
+		case R.id.downBtn:
+			socket.emit("btn", "down");
+			break;
+
+		case R.id.leftBtn:
+			socket.emit("btn", "left");
+			break;
+
+		case R.id.rightBtn:
+			socket.emit("btn", "right");
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	public void BtnSender(View v) {
 		if (socket == null)
-			SocketConnection("http://hoyuo.me:13000");
+			SocketConnection("http://210.118.74.89:13000");
 
 		switch (v.getId()) {
 		case R.id.aBtn:
