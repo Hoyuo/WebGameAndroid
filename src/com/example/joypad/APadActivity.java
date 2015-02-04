@@ -43,7 +43,7 @@ public class APadActivity extends Activity implements OnTouchListener {
 	}
 
 	private void SocketConnection(String server) {
-		ViewTouchCheck();
+		
 		String uuid = UUIDModule.CreateUUID(getApplicationContext());
 		try {
 			socket = new SocketIO(server);
@@ -100,20 +100,19 @@ public class APadActivity extends Activity implements OnTouchListener {
 	}
 
 	public boolean onTouch(View v, MotionEvent event) {
-		
+
 		int f = -1;
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			f = 0;
+		
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			f = 1;
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			f = 2;
 		}
 
-		float x = event.getRawX();
-		float y = event.getRawY();
-
+		ViewTouchCheck(event.getX(), event.getY());
 		if (f != -1 && f != 2) {
 			if (socket == null)
 				SocketConnection("http://210.118.74.89:13000");
@@ -144,23 +143,20 @@ public class APadActivity extends Activity implements OnTouchListener {
 		return false;
 	}
 
-	public void ViewTouchCheck() {
+	public void ViewTouchCheck(float _x, float _y) {
+		int x = (int) _x;
+		int y = (int) _y;
+
 		Rect rUp = new Rect();
 		up.getGlobalVisibleRect(rUp);
-		Log.i("UP", "X : " + rUp.top + "Y : " + rUp.left);
-		Log.i("up", "H : " + rUp.height() + "W : " + rUp.width());
 		Rect rDown = new Rect();
 		down.getGlobalVisibleRect(rDown);
-		Log.i("DOWN", "X : " + rDown.top + "Y : " + rDown.left);
-		Log.i("DOWN", "H : " + rDown.height() + "W : " + rDown.width());
 		Rect rLeft = new Rect();
 		left.getGlobalVisibleRect(rLeft);
-		Log.i("LEFT", "X : " + rLeft.top + "Y : " + rLeft.left);
-		Log.i("LEFT", "H : " + rLeft.height() + "W : " + rLeft.width());
 		Rect rRight = new Rect();
 		right.getGlobalVisibleRect(rRight);
-		Log.i("RIGHT", "X : " + rRight.top + "Y : " + rRight.left);
-		Log.i("RIGHT", "H : " + rRight.height() + "W : " + rRight.width());
+
+		Log.i("TEST", "X " + x + "Y " + y);
 
 	}
 
