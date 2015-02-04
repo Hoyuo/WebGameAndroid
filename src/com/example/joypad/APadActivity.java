@@ -130,11 +130,11 @@ public class APadActivity extends Activity implements OnTouchListener {
 			SocketConnection("http://210.118.74.89:13000");
 
 		switch (v.getId()) {
-		case R.id.aBtn:
+		case R.id.btnA:
 			socket.emit("btn", "A");
 			break;
 
-		case R.id.bBtn:
+		case R.id.btnB:
 			socket.emit("btn", "B");
 			break;
 
