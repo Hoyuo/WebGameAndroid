@@ -10,9 +10,10 @@ import java.net.MalformedURLException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.string;
 import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -21,16 +22,20 @@ import android.widget.Button;
 public class APadActivity extends Activity implements OnTouchListener {
 
 	SocketIO socket = null;
+	Button up;
+	Button down;
+	Button left;
+	Button right;
 
-	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
 		setContentView(R.layout.activity_apad);
-		Button up = (Button) findViewById(R.id.upBtn);
-		Button down = (Button) findViewById(R.id.downBtn);
-		Button left = (Button) findViewById(R.id.leftBtn);
-		Button right = (Button) findViewById(R.id.rightBtn);
+		up = (Button) findViewById(R.id.upBtn);
+		down = (Button) findViewById(R.id.downBtn);
+		left = (Button) findViewById(R.id.leftBtn);
+		right = (Button) findViewById(R.id.rightBtn);
+
 		up.setOnTouchListener(this);
 		down.setOnTouchListener(this);
 		left.setOnTouchListener(this);
@@ -38,6 +43,8 @@ public class APadActivity extends Activity implements OnTouchListener {
 	}
 
 	private void SocketConnection(String server) {
+		ViewTouchCheck();
+		String uuid = UUIDModule.CreateUUID(getApplicationContext());
 		try {
 			socket = new SocketIO(server);
 			socket.connect(new IOCallback() {
@@ -52,31 +59,30 @@ public class APadActivity extends Activity implements OnTouchListener {
 
 				@Override
 				public void onMessage(String data, IOAcknowledge ack) {
-					System.out.println("Server said: " + data);
+
 				}
 
 				@Override
 				public void onError(SocketIOException socketIOException) {
-					System.out.println("an Error occured");
 					socketIOException.printStackTrace();
 				}
 
 				@Override
 				public void onDisconnect() {
-					System.out.println("Connection terminated.");
 				}
 
 				@Override
 				public void onConnect() {
-					System.out.println("Connection established");
 				}
 
 				@Override
 				public void on(String event, IOAcknowledge ack, Object... args) {
-					System.out
-							.println("Server triggered event '" + event + "'");
+					Log.d("test ¿ì¼±", "Server said : " + event + " : "
+							+ (String) args[0]);
 				}
 			});
+			socket.emit("UUID", uuid);
+
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,17 +99,22 @@ public class APadActivity extends Activity implements OnTouchListener {
 		super.onDestroy();
 	}
 
-	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+		
 		int f = -1;
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			f = 0;
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			f = 1;
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			f = 2;
 		}
 
-		if (f != -1) {
+		float x = event.getRawX();
+		float y = event.getRawY();
+
+		if (f != -1 && f != 2) {
 			if (socket == null)
 				SocketConnection("http://210.118.74.89:13000");
 
@@ -131,6 +142,26 @@ public class APadActivity extends Activity implements OnTouchListener {
 			socket.emit("pad", send, f);
 		}
 		return false;
+	}
+
+	public void ViewTouchCheck() {
+		Rect rUp = new Rect();
+		up.getGlobalVisibleRect(rUp);
+		Log.i("UP", "X : " + rUp.top + "Y : " + rUp.left);
+		Log.i("up", "H : " + rUp.height() + "W : " + rUp.width());
+		Rect rDown = new Rect();
+		down.getGlobalVisibleRect(rDown);
+		Log.i("DOWN", "X : " + rDown.top + "Y : " + rDown.left);
+		Log.i("DOWN", "H : " + rDown.height() + "W : " + rDown.width());
+		Rect rLeft = new Rect();
+		left.getGlobalVisibleRect(rLeft);
+		Log.i("LEFT", "X : " + rLeft.top + "Y : " + rLeft.left);
+		Log.i("LEFT", "H : " + rLeft.height() + "W : " + rLeft.width());
+		Rect rRight = new Rect();
+		right.getGlobalVisibleRect(rRight);
+		Log.i("RIGHT", "X : " + rRight.top + "Y : " + rRight.left);
+		Log.i("RIGHT", "H : " + rRight.height() + "W : " + rRight.width());
+
 	}
 
 	public void BtnSender(View v) {
