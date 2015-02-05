@@ -23,7 +23,7 @@ import com.example.joyPadView.APadView;
 public class APadActivity extends Activity implements OnTouchListener {
 	LinearLayout aPad;
 	APadView dpc;
-
+	int dir = -1;
 	int direction = APadView.D_NONE;
 	SocketIO socket = null;
 
@@ -43,7 +43,26 @@ public class APadActivity extends Activity implements OnTouchListener {
 	public boolean onTouch(View v, MotionEvent event) {
 		dpc.onTouch(v, event);
 		direction = dpc.getDirection();
-		String send = null;
+
+		if (socket == null)
+			SocketConnection("http://210.118.74.89:13000");
+
+		if (dir == -1) {
+			dir = direction;
+			if (dir != 0)
+				socket.emit("pad", sendToString(dir), 0);
+		} else if (dir != direction) {
+			if (dir != 0)
+				socket.emit("pad", sendToString(dir), 1);
+			if (direction != 0)
+				socket.emit("pad", sendToString(direction), 0);
+			dir = direction;
+		}
+		return true;
+	}
+
+	public String sendToString(int direction) {
+		String send = "";
 		switch (direction) {
 		case APadView.D_UP:
 			send = "up";
@@ -61,9 +80,7 @@ public class APadActivity extends Activity implements OnTouchListener {
 			send = "null";
 			break;
 		}
-		Log.d("Test", send);
-
-		return true;
+		return send;
 	}
 
 	private void SocketConnection(String server) {
