@@ -28,17 +28,6 @@
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/selectBtn"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="56dp"
-            android:layout_marginLeft="15dp"
-            android:background="#00ff0000"
-            android:onClick="BtnSender" />
-
-        <Button
             android:id="@+id/startBtn"
             android:layout_width="50dp"
             android:layout_height="25dp"
@@ -46,6 +35,17 @@
             android:layout_alignBottom="@+id/selectBtn"
             android:layout_alignParentRight="true"
             android:layout_marginRight="23dp"
+            android:background="#00ff0000"
+            android:onClick="BtnSender" />
+
+        <Button
+            android:id="@+id/selectBtn"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="56dp"
+            android:layout_marginLeft="27dp"
             android:background="#00ff0000"
             android:onClick="BtnSender" />
 
@@ -58,27 +58,24 @@
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/btnB"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="97dp"
-            android:layout_marginLeft="24dp"
-            android:background="#00ff0000"
+            android:id="@+id/btnA"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_above="@+id/btnB"
+            android:layout_toRightOf="@+id/btnB"
+            android:background="@drawable/btn"
             android:onClick="BtnSender" />
 
         <Button
-            android:id="@+id/btnA"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_alignBaseline="@+id/btnB"
-            android:layout_alignBottom="@+id/btnB"
-            android:layout_marginLeft="13dp"
-            android:layout_toRightOf="@+id/btnB"
-            android:background="#00ff0000"
+            android:id="@+id/btnB"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="89dp"
+            android:layout_marginLeft="24dp"
+            android:background="@drawable/btn"
             android:onClick="BtnSender" />
-
     </RelativeLayout>
 
 </LinearLayout>
