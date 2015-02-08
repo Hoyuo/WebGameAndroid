@@ -58,14 +58,11 @@ public class JoystickView extends View implements Runnable {
 		button.setStyle(Paint.Style.FILL);
 	}
 
-	@Override
 	protected void onFinishInflate() {
 	}
 
-	@Override
 	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
-		// before measure, get the center of view
 		xPosition = (int) getWidth() / 2;
 		yPosition = (int) getWidth() / 2;
 		int d = Math.min(xNew, yNew);
@@ -74,10 +71,7 @@ public class JoystickView extends View implements Runnable {
 
 	}
 
-	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		// setting the measured values to resize the view to a certain width and
-		// height
 		int d = Math.min(measure(widthMeasureSpec), measure(heightMeasureSpec));
 
 		setMeasuredDimension(d, d);
@@ -87,35 +81,26 @@ public class JoystickView extends View implements Runnable {
 	private int measure(int measureSpec) {
 		int result = 0;
 
-		// Decode the measurement specifications.
 		int specMode = MeasureSpec.getMode(measureSpec);
 		int specSize = MeasureSpec.getSize(measureSpec);
 
 		if (specMode == MeasureSpec.UNSPECIFIED) {
-			// Return a default size of 200 if no bounds are specified.
 			result = 200;
 		} else {
-			// As you want to fill the available space
-			// always return the full available bounds.
 			result = specSize;
 		}
 		return result;
 	}
 
-	@Override
 	protected void onDraw(Canvas canvas) {
-		// super.onDraw(canvas);
 		centerX = (getWidth()) / 2;
 		centerY = (getHeight()) / 2;
 
-		// painting the main circle
 		canvas.drawCircle((int) centerX, (int) centerY, joystickRadius,
 				mainCircle);
-		// painting the move button
 		canvas.drawCircle(xPosition, yPosition, buttonRadius, button);
 	}
 
-	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		xPosition = (int) event.getX();
 		yPosition = (int) event.getY();
@@ -223,7 +208,6 @@ public class JoystickView extends View implements Runnable {
 		public void onValueChanged(int angle, int power, int direction);
 	}
 
-	@Override
 	public void run() {
 		while (!Thread.interrupted()) {
 			post(new Runnable() {
