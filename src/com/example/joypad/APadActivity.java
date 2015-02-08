@@ -1,18 +1,9 @@
 package com.example.joypad;
 
-import io.socket.IOAcknowledge;
-import io.socket.IOCallback;
-import io.socket.SocketIO;
-import io.socket.SocketIOException;
-
-import java.net.MalformedURLException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -25,7 +16,8 @@ public class APadActivity extends Activity implements OnTouchListener {
 	APadView dpc;
 	int dir = -1;
 	int direction = APadView.D_NONE;
-	SocketIO socket = null;
+	Communication cm = null;
+	Vibrator mVibrator;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,24 +30,24 @@ public class APadActivity extends Activity implements OnTouchListener {
 
 		aPad = (LinearLayout) findViewById(R.id.layoutAPad);
 		aPad.setOnTouchListener(this);
+		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		cm = new Communication(getApplicationContext(),
+				"http://210.118.74.89:13000");
 	}
 
 	public boolean onTouch(View v, MotionEvent event) {
 		dpc.onTouch(v, event);
 		direction = dpc.getDirection();
 
-		if (socket == null)
-			SocketConnection("http://210.118.74.89:13000");
-
 		if (dir == -1) {
 			dir = direction;
 			if (dir != 0)
-				socket.emit("pad", sendToString(dir), 0);
+				cm.emit("pad", sendToString(dir), 0);
 		} else if (dir != direction) {
 			if (dir != 0)
-				socket.emit("pad", sendToString(dir), 1);
+				cm.emit("pad", sendToString(dir), 1);
 			if (direction != 0)
-				socket.emit("pad", sendToString(direction), 0);
+				cm.emit("pad", sendToString(direction), 0);
 			dir = direction;
 		}
 		return true;
@@ -83,84 +75,32 @@ public class APadActivity extends Activity implements OnTouchListener {
 		return send;
 	}
 
-	private void SocketConnection(String server) {
-		try {
-			socket = new SocketIO(server);
-			socket.connect(new IOCallback() {
-				@Override
-				public void onMessage(JSONObject json, IOAcknowledge ack) {
-					try {
-						System.out.println("Server said:" + json.toString(2));
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-
-				@Override
-				public void onMessage(String data, IOAcknowledge ack) {
-
-				}
-
-				@Override
-				public void onError(SocketIOException socketIOException) {
-					socketIOException.printStackTrace();
-				}
-
-				@Override
-				public void onDisconnect() {
-				}
-
-				@Override
-				public void onConnect() {
-				}
-
-				@Override
-				public void on(String event, IOAcknowledge ack, Object... args) {
-					Log.d("test ¿ì¼±", "Server said : " + event + " : "
-							+ (String) args[0]);
-				}
-			});
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String uuid = UUIDModule.CreateUUID(getApplicationContext());
-		socket.emit("UUID", uuid);
-	}
-
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		if (socket != null) {
-			socket.disconnect();
-			socket = null;
-		}
+		cm.close();
 		super.onDestroy();
 	}
 
-	// if (socket == null)
-	// SocketConnection("http://210.118.74.89:13000");
-	// socket.emit("pad", direction, 0);
-
 	public void BtnSender(View v) {
-		if (socket == null)
-			SocketConnection("http://210.118.74.89:13000");
 
 		switch (v.getId()) {
 		case R.id.btnA:
-			socket.emit("btn", "A");
+			mVibrator.vibrate(5);
+			cm.emit("btn", "A");
 			break;
 
 		case R.id.btnB:
-			socket.emit("btn", "B");
+			mVibrator.vibrate(5);
+			cm.emit("btn", "B");
 			break;
 
 		case R.id.selectBtn:
-			socket.emit("btn", "select");
+			cm.emit("btn", "select");
 			break;
 
 		case R.id.startBtn:
-			socket.emit("btn", "start");
+			cm.emit("btn", "start");
 			break;
 
 		default:
