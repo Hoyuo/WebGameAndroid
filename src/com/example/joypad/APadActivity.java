@@ -32,7 +32,7 @@ public class APadActivity extends Activity implements OnTouchListener {
 		aPad.setOnTouchListener(this);
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		cm = new Communication(getApplicationContext(),
-				"http://210.118.74.89:13000");
+				"http://210.118.74.89:3000");
 	}
 
 	public boolean onTouch(View v, MotionEvent event) {

@@ -25,7 +25,7 @@ public class DPadActivity extends Activity {
 				JoystickView.DEFAULT_LOOP_INTERVAL);
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		cm = new Communication(getApplicationContext(),
-				"http://210.118.74.89:13000");
+				"http://210.118.74.89:3000");
 	}
 
 	JoystickView.OnJoystickMoveListener joystickMoveListener = new OnJoystickMoveListener() {
