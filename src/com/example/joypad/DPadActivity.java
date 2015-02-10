@@ -30,28 +30,28 @@ public class DPadActivity extends Activity {
 
 	JoystickView.OnJoystickMoveListener joystickMoveListener = new OnJoystickMoveListener() {
 		public void onValueChanged(int angle, int power, int direction) {
-			int temp ;
-			switch(direction) {
+			int temp;
+			switch (direction) {
 			case JoystickView.FRONT:
-            case JoystickView.FRONT_RIGHT:
-            	temp = JoystickView.FRONT;
-                break;
-            case JoystickView.RIGHT:
-            case JoystickView.RIGHT_BOTTOM:
-            	temp = JoystickView.RIGHT;
-                break;
-            case JoystickView.BOTTOM:
-            case JoystickView.BOTTOM_LEFT:
-            	temp = JoystickView.BOTTOM;
-                break;
-            case JoystickView.LEFT:
-            case JoystickView.LEFT_FRONT:
-            	temp = JoystickView.LEFT;
-                break;
-            default:
-            	temp = 0;
+			case JoystickView.FRONT_RIGHT:
+				temp = JoystickView.FRONT;
+				break;
+			case JoystickView.RIGHT:
+			case JoystickView.RIGHT_BOTTOM:
+				temp = JoystickView.RIGHT;
+				break;
+			case JoystickView.BOTTOM:
+			case JoystickView.BOTTOM_LEFT:
+				temp = JoystickView.BOTTOM;
+				break;
+			case JoystickView.LEFT:
+			case JoystickView.LEFT_FRONT:
+				temp = JoystickView.LEFT;
+				break;
+			default:
+				temp = 0;
 			}
-			
+
 			if (dir == -1) {
 				dir = temp;
 				if (dir != 0)
@@ -88,7 +88,6 @@ public class DPadActivity extends Activity {
 		return send;
 	}
 
-	
 	public void BtnSender(View v) {
 
 		switch (v.getId()) {

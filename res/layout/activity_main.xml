@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="APAD" />
-    
+
     <Button
         android:id="@+id/dpadBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:text="DPAD"/>
+        android:layout_height="wrap_content"
+        android:text="DPAD" />
 
 </LinearLayout>
