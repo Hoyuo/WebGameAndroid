@@ -11,16 +11,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 
 public class Communication {
 
 	SocketIO socket = null;
 	Context ctx;
 	String URL;
+	String userId;
 
-	public Communication(Context ctx, String URL) {
+	public Communication(Context ctx, String URL, String userId) {
 		this.ctx = ctx;
 		this.URL = URL;
+		this.userId = userId;
 		SocketConnection();
 	}
 
@@ -31,7 +34,7 @@ public class Communication {
 				@Override
 				public void onMessage(JSONObject json, IOAcknowledge ack) {
 					try {
-						System.out.println("Server said:" + json.toString(2));
+						Log.d("onMessage", "Server said:" + json.toString(2));
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -64,7 +67,7 @@ public class Communication {
 			e.printStackTrace();
 		}
 		String uuid = UUIDModule.CreateUUID(ctx);
-		socket.emit("UUID", uuid);
+		socket.emit("UUID", uuid, userId);
 	}
 
 	public void emit(String event, Object... args) {

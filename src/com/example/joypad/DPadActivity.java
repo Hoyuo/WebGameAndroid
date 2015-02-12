@@ -2,6 +2,7 @@ package com.example.joypad;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -24,8 +25,15 @@ public class DPadActivity extends Activity {
 		joystick.setOnJoystickMoveListener(joystickMoveListener,
 				JoystickView.DEFAULT_LOOP_INTERVAL);
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		String userId = getPreference();
 		cm = new Communication(getApplicationContext(),
-				"http://210.118.74.89:3000");
+				"http://210.118.74.89:3000", userId);
+	}
+
+	private String getPreference() {
+		SharedPreferences prefs = getSharedPreferences("userId", MODE_PRIVATE);
+		String userId = prefs.getString("userId", "");
+		return userId;
 	}
 
 	JoystickView.OnJoystickMoveListener joystickMoveListener = new OnJoystickMoveListener() {

@@ -8,13 +8,17 @@
     <Button
         android:id="@+id/apadBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#33000000"
         android:text="APAD" />
 
     <Button
         android:id="@+id/dpadBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#33000000"
         android:text="DPAD" />
 
 </LinearLayout>

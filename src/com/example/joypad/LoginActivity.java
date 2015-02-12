@@ -1,8 +1,6 @@
 package com.example.joypad;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -17,12 +15,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONTokener;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -69,15 +67,21 @@ public class LoginActivity extends Activity {
 									.execute(httpPost);
 							String responseString = EntityUtils.toString(
 									response.getEntity(), HTTP.UTF_8);
-							BufferedReader reader = new BufferedReader(
-									new InputStreamReader(response.getEntity()
-											.getContent(), "UTF-8"));
-							String json = reader.readLine();
-							JSONTokener tokener = new JSONTokener(json);
-							JSONArray finalResult = new JSONArray(tokener);
 
-							Log.d("Test", finalResult.getString(1));
+							JSONObject responseJSON = new JSONObject(
+									responseString);
 
+							Log.d("Test", responseJSON.get("status").toString());
+
+							if (responseJSON.get("status").toString()
+									.equals("200")) {
+								setPreference();
+								Intent i = new Intent();
+								i.setClassName("com.example.joypad",
+										"com.example.joypad.MainActivity");
+								startActivity(i);
+								finish();
+							}
 						} catch (URISyntaxException e) {
 							e.printStackTrace();
 						} catch (ClientProtocolException e) {
@@ -90,10 +94,15 @@ public class LoginActivity extends Activity {
 
 					}
 				};
-
 				thread.start();
 			}
 		});
+	}
 
+	private void setPreference() {
+		SharedPreferences prefs = getSharedPreferences("userId", MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString("userId", email.getText().toString());
+		editor.commit();
 	}
 }
