@@ -46,7 +46,7 @@ public class LoginActivity extends Activity {
 					public void run() {
 						HttpClient httpClient = new DefaultHttpClient();
 
-						String urlString = "http://210.118.74.89:3000/LOGINMOBILE";
+						String urlString = "http://210.118.74.117:3000/LOGINMOBILE";
 						try {
 							URI url = new URI(urlString);
 

@@ -34,7 +34,7 @@ public class APadActivity extends Activity implements OnTouchListener {
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		String userId = getPreference();
 		cm = new Communication(getApplicationContext(),
-				"http://210.118.74.89:3000", userId);
+				"http://210.118.74.117:3000", userId);
 	}
 
 	private String getPreference() {
