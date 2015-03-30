@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 
 import com.example.joyPadView.JoystickView;
@@ -41,34 +42,47 @@ public class DPadActivity extends Activity {
 			int temp;
 			switch (direction) {
 			case JoystickView.FRONT:
+				temp = JoystickView.FRONT;
+				break;
 			case JoystickView.FRONT_RIGHT:
 				temp = JoystickView.FRONT;
 				break;
 			case JoystickView.RIGHT:
+				temp = JoystickView.RIGHT;
+				break;
 			case JoystickView.RIGHT_BOTTOM:
 				temp = JoystickView.RIGHT;
 				break;
 			case JoystickView.BOTTOM:
+				temp = JoystickView.BOTTOM;
+				break;
 			case JoystickView.BOTTOM_LEFT:
 				temp = JoystickView.BOTTOM;
 				break;
 			case JoystickView.LEFT:
+				temp = JoystickView.LEFT;
+				break;
 			case JoystickView.LEFT_FRONT:
 				temp = JoystickView.LEFT;
 				break;
 			default:
 				temp = 0;
 			}
-
 			if (dir == -1) {
 				dir = temp;
-				if (dir != 0)
+				if (dir != 0) {
 					cm.emit("pad", sendToString(dir), 0);
+					Log.d("PAD", sendToString(dir));
+				}
 			} else if (dir != temp) {
-				if (dir != 0)
+				if (dir != 0) {
 					cm.emit("pad", sendToString(dir), 1);
-				if (temp != 0)
+					Log.d("PAD", sendToString(dir));
+				}
+				if (temp != 0) {
 					cm.emit("pad", sendToString(temp), 0);
+					Log.d("PAD", sendToString(temp));
+				}
 				dir = temp;
 			}
 		}
@@ -83,10 +97,10 @@ public class DPadActivity extends Activity {
 		case JoystickView.BOTTOM:
 			send = "down";
 			break;
-		case JoystickView.LEFT:
+		case JoystickView.RIGHT:
 			send = "left";
 			break;
-		case JoystickView.RIGHT:
+		case JoystickView.LEFT:
 			send = "right";
 			break;
 		default:
