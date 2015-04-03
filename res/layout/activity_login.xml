@@ -15,9 +15,9 @@
         android:background="@drawable/shape2"
         android:ems="10"
         android:hint="E-mail"
-        android:textColor="#CC0000"
         android:inputType="textEmailAddress"
         android:paddingLeft="15dp"
+        android:textColor="#CC0000"
         android:textSize="25sp" />
 
     <EditText
@@ -31,9 +31,9 @@
         android:background="@drawable/shape2"
         android:ems="10"
         android:hint="Password"
-        android:textColor="#CC0000"
         android:inputType="textPassword"
         android:paddingLeft="15dp"
+        android:textColor="#CC0000"
         android:textSize="25sp" />
 
     <Button
@@ -46,6 +46,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/shape"
+        android:onClick="LoginButtonClick"
         android:text="Login"
         android:textColor="#FFFFFF" />
 

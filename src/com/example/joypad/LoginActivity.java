@@ -22,10 +22,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	EditText email;
@@ -36,67 +39,79 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		startActivity(new Intent(this, Splash_Activity.class));
-		Button loginBtn = (Button) findViewById(R.id.loginBtn);
 		email = (EditText) findViewById(R.id.idInput);
 		password = (EditText) findViewById(R.id.passwordInput);
+	}
 
-		loginBtn.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Thread thread = new Thread() {
-					public void run() {
-						HttpClient httpClient = new DefaultHttpClient();
+	public void LoginButtonClick(View v) {
 
-						String urlString = "http://210.118.74.117:3000/LOGINMOBILE";
-						try {
-							URI url = new URI(urlString);
-
-							HttpPost httpPost = new HttpPost();
-							httpPost.setURI(url);
-
-							List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(
-									2);
-							nameValuePairs.add(new BasicNameValuePair("userId",
-									email.getText().toString()));
-							nameValuePairs.add(new BasicNameValuePair(
-									"password", password.getText().toString()));
-
-							httpPost.setEntity(new UrlEncodedFormEntity(
-									nameValuePairs));
-
-							HttpResponse response = httpClient
-									.execute(httpPost);
-							String responseString = EntityUtils.toString(
-									response.getEntity(), HTTP.UTF_8);
-
-							JSONObject responseJSON = new JSONObject(
-									responseString);
-
-							Log.d("Test", responseJSON.get("status").toString());
-
-							if (responseJSON.get("status").toString()
-									.equals("200")) {
-								setPreference();
-								Intent i = new Intent();
-								i.setClassName("com.example.joypad",
-										"com.example.joypad.MainActivity");
-								startActivity(i);
-								finish();
-							}
-						} catch (URISyntaxException e) {
-							e.printStackTrace();
-						} catch (ClientProtocolException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-
-					}
-				};
-				thread.start();
+		final Handler handler = new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				if (msg.what == 1) {
+					email.setText("");
+					password.setText("");
+					Toast.makeText(LoginActivity.this, "LoginError",
+							Toast.LENGTH_SHORT).show();
+					email.requestFocus();
+				}
 			}
-		});
+		};
+
+		Thread thread = new Thread() {
+			public void run() {
+				HttpClient httpClient = new DefaultHttpClient();
+
+				String urlString = ServerIP.IP + "/LOGINMOBILE";
+				try {
+					URI url = new URI(urlString);
+
+					HttpPost httpPost = new HttpPost();
+					httpPost.setURI(url);
+
+					List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(
+							2);
+					nameValuePairs.add(new BasicNameValuePair("userId", email
+							.getText().toString()));
+					nameValuePairs.add(new BasicNameValuePair("password",
+							password.getText().toString()));
+
+					httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+					HttpResponse response = httpClient.execute(httpPost);
+					String responseString = EntityUtils.toString(
+							response.getEntity(), HTTP.UTF_8);
+
+					JSONObject responseJSON = new JSONObject(responseString);
+
+					Log.d("Test", responseJSON.get("status").toString());
+
+					if (responseJSON.get("status").toString().equals("200")) {
+						setPreference();
+						Intent i = new Intent();
+						i.setClassName("com.example.joypad",
+								"com.example.joypad.MainActivity");
+						startActivity(i);
+						finish();
+						interrupt();
+					} else {
+						Message message = Message.obtain();
+						message.what = 1;
+						handler.sendMessage(message);
+						interrupt();
+					}
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		thread.start();
 	}
 
 	private void setPreference() {

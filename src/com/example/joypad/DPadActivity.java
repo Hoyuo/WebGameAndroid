@@ -28,7 +28,7 @@ public class DPadActivity extends Activity {
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		String userId = getPreference();
 		cm = new Communication(getApplicationContext(),
-				"http://210.118.74.117:3000", userId);
+				ServerIP.IP, userId);
 	}
 
 	private String getPreference() {
