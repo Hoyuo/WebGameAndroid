@@ -26,17 +26,11 @@ public class DPadActivity extends Activity {
 		joystick.setOnJoystickMoveListener(joystickMoveListener,
 				JoystickView.DEFAULT_LOOP_INTERVAL);
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		String userId = getPreference();
+		String userId = Server.userId;
 		cm = new Communication(getApplicationContext(),
-				ServerIP.IP, userId);
+				Server.IP, userId);
 	}
-
-	private String getPreference() {
-		SharedPreferences prefs = getSharedPreferences("userId", MODE_PRIVATE);
-		String userId = prefs.getString("userId", "");
-		return userId;
-	}
-
+	
 	JoystickView.OnJoystickMoveListener joystickMoveListener = new OnJoystickMoveListener() {
 		public void onValueChanged(int angle, int power, int direction) {
 			int temp;

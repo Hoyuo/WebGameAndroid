@@ -81,4 +81,5 @@ public class Communication {
 	public void close() {
 		socket.disconnect();
 	}
+
 }

@@ -2,7 +2,6 @@ package com.example.joypad;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.MotionEvent;
@@ -32,15 +31,9 @@ public class APadActivity extends Activity implements OnTouchListener {
 		aPad = (LinearLayout) findViewById(R.id.layoutAPad);
 		aPad.setOnTouchListener(this);
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		String userId = getPreference();
+		String userId = Server.userId;
 		cm = new Communication(getApplicationContext(),
-				ServerIP.IP, userId);
-	}
-
-	private String getPreference() {
-		SharedPreferences prefs = getSharedPreferences("userId", MODE_PRIVATE);
-		String userId = prefs.getString("userId", "");
-		return userId;
+				Server.IP, userId);
 	}
 
 	public boolean onTouch(View v, MotionEvent event) {

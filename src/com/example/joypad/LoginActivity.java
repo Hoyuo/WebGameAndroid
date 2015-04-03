@@ -62,7 +62,7 @@ public class LoginActivity extends Activity {
 			public void run() {
 				HttpClient httpClient = new DefaultHttpClient();
 
-				String urlString = ServerIP.IP + "/LOGINMOBILE";
+				String urlString = Server.IP + "/LOGINMOBILE";
 				try {
 					URI url = new URI(urlString);
 
@@ -119,5 +119,6 @@ public class LoginActivity extends Activity {
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString("userId", email.getText().toString());
 		editor.commit();
+		Server.userId = email.getText().toString();
 	}
 }
