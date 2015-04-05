@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/nesbg"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    tools:context=".APadActivity">
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center_vertical">
+
+        <LinearLayout
+            android:id="@+id/layoutAPad"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@mipmap/dpad_normal"
+            android:orientation="vertical"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/startBtn"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignBaseline="@+id/selectBtn"
+            android:layout_alignBottom="@+id/selectBtn"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="23dp"
+            android:background="#00ff0000"
+            android:onClick="BtnSender" />
+
+        <Button
+            android:id="@+id/selectBtn"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="56dp"
+            android:layout_marginLeft="27dp"
+            android:background="#00ff0000"
+            android:onClick="BtnSender" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnA"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_above="@+id/btnB"
+            android:layout_toRightOf="@+id/btnB"
+            android:background="@mipmap/btn"
+            android:onClick="BtnSender" />
+
+        <Button
+            android:id="@+id/btnB"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="89dp"
+            android:layout_marginLeft="24dp"
+            android:background="@mipmap/btn"
+            android:onClick="BtnSender" />
+    </RelativeLayout>
+
+</LinearLayout>
